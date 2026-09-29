@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#1e6b3f">
+<title>سوق اليمن - منصة متعددة البائعين</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
+:root{--p:#1e6b3f;--pd:#154d2d;--a:#d4a017;--bg:#f5f7fa;--t:#1a2332;--m:#6b7a8f;--b:#e1e5ea;--d:#dc3545;--s:#28a745}
+body{background:var(--bg);color:var(--t);font-size:14px;line-height:1.5}
+header{background:var(--p);color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.1);gap:6px}
+.logo{font-weight:bold;font-size:15px;white-space:nowrap}
+.logo span{color:var(--a)}
+.roles{display:flex;gap:3px}
+.roles button{padding:6px 9px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;transition:.15s}
+.roles button.on{background:var(--a);color:#000;border-color:var(--a);font-weight:bold}
+.cart-btn{font-size:13px;cursor:pointer;white-space:nowrap;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.1)}
+.wrap{padding:14px;max-width:1200px;margin:auto;padding-bottom:80px}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--b);margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:9px 13px;background:none;border:none;color:var(--m);border-bottom:3px solid transparent;white-space:nowrap;font-size:13px;cursor:pointer;font-weight:500}
+.tab.on{color:var(--p);border-color:var(--p);font-weight:bold}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(155px,1fr))}
+.card{background:#fff;border:1px solid var(--b);border-radius:10px;padding:12px}
+.stat{text-align:center;padding:16px 10px}
+.stat .n{font-size:22px;font-weight:bold;color:var(--p);margin-bottom:2px}
+.stat .l{font-size:11px;color:var(--m)}
+.pr{cursor:pointer;transition:.15s;position:relative}
+.pr:active{transform:scale(.98);border-color:var(--p)}
+.icon{height:90px;display:flex;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:8px;margin-bottom:6px}
+h3{font-size:14px;margin:6px 0 4px;font-weight:600}
+h2{font-size:18px;margin-bottom:12px}
+.price{color:var(--p);font-weight:bold;font-size:15px}
+.old-price{color:var(--m);text-decoration:line-through;font-size:11px}
+.muted{color:var(--m);font-size:11px;line-height:1.4}
+.btn{padding:8px 14px;border:none;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;transition:.15s}
+.btn:active{transform:scale(.97)}
+.bp{background:var(--p);color:#fff}
+.ba{background:var(--a);color:#000;font-weight:bold}
+.bo{background:transparent;border:1px solid var(--b);color:var(--t)}
+.bd{background:var(--d);color:#fff}
+.bs{padding:5px 10px;font-size:11px}
+.flex{display:flex;gap:6px;align-items:center}
+.fb{display:flex;justify-content:space-between;align-items:center}
+.mt{margin-top:10px}
+.mb{margin-bottom:10px}
+.badge{padding:3px 8px;border-radius:10px;font-size:10px;display:inline-block;font-weight:500}
+.bg{background:#d4edda;color:#155724}
+.bw{background:#fff3cd;color:#856404}
+.bd2{background:#f8d7da;color:#721c24}
+.bi{background:#d1ecf1;color:#0c5460}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:9px 7px;text-align:right;border-bottom:1px solid var(--b)}
+th{background:#f8f9fb;color:var(--m);font-size:11px;font-weight:600}
+tr:last-child td{border-bottom:none}
+.drawer{position:fixed;top:0;left:0;width:340px;max-width:88vw;height:100vh;background:#fff;transform:translateX(-100%);transition:.3s;z-index:100;padding:16px;overflow-y:auto;box-shadow:4px 0 24px rgba(0,0,0,.2)}
+.drawer.on{transform:translateX(0)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:.3s;z-index:99}
+.ov.on{opacity:1;pointer-events:auto}
+.hide{display:none!important}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:14px;z-index:200}
+.modal.on{display:flex}
+.mc{background:#fff;border-radius:12px;padding:18px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto}
+input,select{width:100%;padding:10px 12px;border:1px solid var(--b);border-radius:7px;font-size:14px;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--p)}
+input,select{margin-top:8px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a2332;color:#fff;padding:12px 20px;border-radius:10px;opacity:0;transition:.3s;z-index:300;font-size:13px;max-width:85vw;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.ok{background:var(--s)}
+.toast.err{background:var(--d)}
+.city{padding:5px 12px;border-radius:14px;font-size:12px;background:#e8f5e9;color:var(--p);cursor:pointer;display:inline-block;margin:3px;border:1.5px solid transparent;font-weight:500}
+.city.on{background:var(--p);color:#fff}
+.bars{display:flex;gap:8px;height:120px;align-items:flex-end;background:#f8f9fb;padding:10px 8px;border-radius:8px;margin-bottom:22px}
+.bar{flex:1;background:linear-gradient(to top,var(--p),#4caf50);border-radius:4px 4px 0 0;position:relative;min-height:10px;transition:.3s}
+.bar span{position:absolute;top:-16px;left:0;right:0;text-align:center;font-size:9px;font-weight:bold;color:var(--p)}
+.bar i{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-size:10px;color:var(--m);font-style:normal}
+.empty{text-align:center;padding:40px 20px;color:var(--m)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🛒 سوق<span>اليمن</span></div>
+  <div class="roles">
+    <button id="r-buyer" class="on" onclick="app.role('buyer')">مشتري</button>
+    <button id="r-seller" onclick="app.role('seller')">بائع</button>
+    <button id="r-admin" onclick="app.role('admin')">مدير</button>
+  </div>
+  <div class="cart-btn" onclick="cart.toggle()">🛍️ <span id="cc">0</span></div>
+</header>
+
+<div id="v-buyer" class="wrap">
+  <div class="tabs">
+    <button class="tab on" onclick="app.tab('buyer','home',this)">🏠 الرئيسية</button>
+    <button class="tab" onclick="app.tab('buyer','shop',this)">📦 المنتجات</button>
+    <button class="tab" onclick="app.tab('buyer','orders',this)">📋 طلباتي</button>
+    <button class="tab" onclick="app.tab('buyer','wallet',this)">💰 محفظتي</button>
+  </div>
+  <div id="buyer-home" class="sec">
+    <div class="grid mb">
+      <div class="card stat"><div class="n">4</div><div class="l">مدن</div></div>
+      <div class="card stat"><div class="n">12</div><div class="l">بائع</div></div>
+      <div class="card stat"><div class="n">250+</div><div class="l">منتج</div></div>
+      <div class="card stat"><div class="n">24h</div><div class="l">توصيل</div></div>
+    </div>
+    <h3>🇾🇪 اختر مدينتك</h3>
+    <div id="cities" class="mb" style="margin-top:8px"></div>
+    <h3 class="mt">🔥 منتجات مميزة</h3>
+    <div class="grid" id="feat" style="margin-top:8px"></div>
+  </div>
+  <div id="buyer-shop" class="sec hide">
+    <input placeholder="🔍 ابحث عن منتج..." oninput="prod.render()" id="q">
+    <div class="grid" id="all" style="margin-top:12px"></div>
+  </div>
+  <div id="buyer-orders" class="sec hide">
+    <h3>📋 طلباتي</h3>
+    <div id="ordList" style="margin-top:10px"></div>
+  </div>
+  <div id="buyer-wallet" class="sec hide">
+    <h3>💰 محفظتي</h3>
+    <div class="grid" style="margin-top:10px">
+      <div class="card stat"><div class="n" id="wb">0</div><div class="l">رصيد (ر.ي)</div></div>
+      <div class="card stat"><div class="n">3</div><div class="l">طرق دفع</div></div>
+    </div>
+    <div class="card mt">
+      <h3>طرق الدفع المتاحة</h3>
+      <p class="muted mt">💳 بطاقات بنكية (الأهلي، التضامن)</p>
+      <p class="muted">📱 محفظة الكريمي (Kuraimi Cash)</p>
+      <p class="muted">💵 الدفع عند الاستلام - صنعاء، عدن</p>
+    </div>
+  </div>
+</div>
+
+<div id="v-seller" class="wrap hide">
+  <div class="tabs">
+    <button class="tab on" onclick="app.tab('seller','dash',this)">📊 التحكم</button>
+    <button class="tab" onclick="app.tab('seller','prods',this)">📦 منتجاتي</button>
+    <button class="tab" onclick="app.tab('seller','sord',this)">📋 الطلبات</button>
+  </div>
+  <div id="seller-dash" class="sec">
+    <div class="grid mb">
+      <div class="card stat"><div class="n" id="sr">0</div><div class="l">مبيعات</div></div>
+      <div class="card stat"><div class="n" id="so">0</div><div class="l">طلبات</div></div>
+      <div class="card stat"><div class="n" id="sp">0</div><div class="l">منتجات</div></div>
+      <div class="card stat"><div class="n">4.8⭐</div><div class="l">تقييم</div></div>
+    </div>
+    <div class="card mb">
+      <h3>📈 مبيعات الأسبوع</h3>
+      <div class="bars" id="sc" style="margin-top:12px"></div>
+    </div>
+    <div class="card">
+      <h3>🔔 آخر النشاطات</h3>
+      <p class="muted mt">🛒 طلب جديد من صنعاء - 185,000 ر.ي</p>
+      <p class="muted">⭐ تقييم 5 نجوم على "بن يمني"</p>
+      <p class="muted">💰 تحويل 450,000 ر.ي لمحفظتك</p>
+      <p class="muted">📦 تم تسليم طلب #998</p>
+    </div>
+  </div>
+  <div id="seller-prods" class="sec hide">
+    <div class="fb mb">
+      <h3>📦 منتجاتي</h3>
+      <button class="btn bp bs" onclick="seller.addForm()">+ إضافة منتج</button>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>منتج</th><th>سعر</th><th>مخزون</th><th></th></tr></thead>
+        <tbody id="spt"></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="seller-sord" class="sec hide">
+    <h3>📋 الطلبات الواردة</h3>
+    <div class="card mt">
+      <table>
+        <thead><tr><th>#</th><th>عميل</th><th>مبلغ</th><th>حالة</th></tr></thead>
+        <tbody id="sot"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="v-admin" class="wrap hide">
+  <div class="tabs">
+    <button class="tab on" onclick="app.tab('admin','ov',this)">📊 عام</button>
+    <button class="tab" onclick="app.tab('admin','sel',this)">🏪 بائعون</button>
+    <button class="tab" onclick="app.tab('admin','kyc',this)">🆔 التوثيق</button>
+  </div>
+  <div id="admin-ov" class="sec">
+    <div class="grid mb">
+      <div class="card stat"><div class="n" id="gmv">0</div><div class="l">إجمالي المبيعات</div></div>
+      <div class="card stat"><div class="n" id="com">0</div><div class="l">عمولة 5%</div></div>
+      <div class="card stat"><div class="n">1,234</div><div class="l">مستخدم</div></div>
+      <div class="card stat"><div class="n" id="as">0</div><div class="l">بائعون نشطون</div></div>
+    </div>
+    <div class="card">
+      <h3>📈 مبيعات آخر 7 أيام</h3>
+      <div class="bars" id="ac" style="margin-top:12px"></div>
+    </div>
+  </div>
+  <div id="admin-sel" class="sec hide">
+    <h3>🏪 إدارة البائعين</h3>
+    <div class="card mt">
+      <table>
+        <thead><tr><th>بائع</th><th>مدينة</th><th>مبيعات</th><th>حالة</th><th></th></tr></thead>
+        <tbody id="ast"></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="admin-kyc" class="sec hide">
+    <h3>🆔 طلبات التوثيق</h3>
+    <div id="kycList" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<div class="ov" id="ov" onclick="cart.toggle()"></div>
+<aside class="drawer" id="dr">
+  <div class="fb mb">
+    <h3>🛍️ سلة التسوق</h3>
+    <button class="btn bo bs" onclick="cart.toggle()">✕</button>
+  </div>
+  <div id="ci"></div>
+  <div id="cs" class="mt"></div>
+</aside>
+<div class="modal" id="md"><div class="mc" id="mdc"></div></div>
+<div class="toast" id="to"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const f=n=>n.toLocaleString('ar-YE');
+const toast=(m,t='ok')=>{
+  const e=$('to');
+  e.textContent=m;
+  e.className='toast on '+t;
+  clearTimeout(e._t);
+  e._t=setTimeout(()=>e.className='toast '+t,2200);
+};
+
+const DB={
+  user:{name:'أحمد اليماني',wallet:150000},
+  cities:[
+    {id:'sa',n:'صنعاء',on:true,sh:1500},
+    {id:'ad',n:'عدن',sh:2500},
+    {id:'tz',n:'تعز',sh:2000},
+    {id:'hd',n:'الحديدة',sh:2500}
+  ],
+  sellers:[
+    {id:1,n:'متجر النور',c:'صنعاء',r:4.8,p:45,s:1250000,st:'active',v:true},
+    {id:2,n:'بازار عدن',c:'عدن',r:4.5,p:32,s:890000,st:'active',v:true},
+    {id:3,n:'تاج تعز',c:'تعز',r:4.2,p:28,s:650000,st:'active',v:false},
+    {id:4,n:'سوق الحديدة',c:'الحديدة',r:4.6,p:20,s:430000,st:'pending',v:false}
+  ],
+  products:[
+    {id:1,n:'سامسونج A15',p:185000,o:210000,c:'إلكترونيات',s:1,st:15,x:23,i:'📱',ct:'صنعاء'},
+    {id:2,n:'لابتوب Dell',p:420000,o:0,c:'إلكترونيات',s:2,st:8,x:5,i:'💻',ct:'عدن'},
+    {id:3,n:'بن يمني 1كغ',p:12000,o:15000,c:'أغذية',s:1,st:120,x:340,i:'☕',ct:'صنعاء'},
+    {id:4,n:'عسل سدر فاخر',p:45000,o:0,c:'أغذية',s:3,st:35,x:78,i:'🍯',ct:'تعز'},
+    {id:5,n:'ثوب رجالي',p:18500,o:22000,c:'ملابس',s:3,st:50,x:95,i:'👕',ct:'تعز'},
+    {id:6,n:'ساعة Xiaomi',p:65000,o:0,c:'إلكترونيات',s:2,st:22,x:44,i:'⌚',ct:'عدن'},
+    {id:7,n:'زيت جوز هند',p:8500,o:0,c:'تجميل',s:4,st:80,x:120,i:'🧴',ct:'الحديدة'},
+    {id:8,n:'أواني منزلية',p:32000,o:38000,c:'منزل',s:1,st:18,x:29,i:'🍽️',ct:'صنعاء'},
+    {id:9,n:'شاحن سريع 65W',p:14500,o:0,c:'إلكترونيات',s:2,st:60,x:88,i:'🔌',ct:'عدن'},
+    {id:10,n:'عطر شرقي',p:22000,o:28000,c:'تجميل',s:4,st:40,x:67,i:'🌸',ct:'الحديدة'},
+    {id:11,n:'حقيبة جلدية',p:27000,o:0,c:'ملابس',s:3,st:25,x:33,i:'🎒',ct:'تعز'},
+    {id:12,n:'مكواة بخار',p:38000,o:45000,c:'منزل',s:1,st:12,x:19,i:'♨️',ct:'صنعاء'}
+  ],
+  cart:[],
+  orders:[],
+  kyc:[
+    {id:1,s:'سوق الحديدة',d:'سجل تجاري'},
+    {id:2,s:'متجر الفجر',d:'بطاقة شخصية'},
+    {id:3,s:'بازار المستقبل',d:'رخصة عمل'}
+  ]
+};
+
+const app={
+  cur:'buyer',
+  role(r){
+    this.cur=r;
+    ['buyer','seller','admin'].forEach(x=>{
+      $('v-'+x).classList.toggle('hide',x!==r);
+      $('r-'+x).classList.toggle('on',x===r);
+    });
+    if(r==='seller')seller.render();
+    if(r==='admin')admin.render();
+    if(r==='buyer')prod.render();
+  },
+  tab(role,name,btn){
+    document.querySelectorAll('#v-'+role+' .tab').forEach(t=>t.classList.remove('on'));
+    btn.classList.add('on');
+    document.querySelectorAll('#v-'+role+' .sec').forEach(s=>s.classList.add('hide'));
+    $(role+'-'+name).classList.remove('hide');
+    if(role==='buyer'&&name==='orders')order.render();
+    if(role==='buyer'&&name==='wallet')$('wb').textContent=f(DB.user.wallet);
+  }
+};
+
+const cities={
+  render(){
+    $('cities').innerHTML=DB.cities.map(c=>
+      `<span class="city ${c.on?'on':''}" onclick="cities.sel('${c.id}')">${c.n}${c.on?' ✓':''}</span>`
+    ).join('');
+  },
+  sel(id){
+    DB.cities.forEach(c=>c.on=c.id===id);
+    this.render();
+    toast('✅ تم اختيار '+DB.cities.find(c=>c.id===id).n);
+  }
+};
+
+const prod={
+  render(){
+    const q=($('q')?.value||'').toLowerCase();
+    const l=DB.products.filter(p=>p.n.toLowerCase().includes(q));
+    $('all').innerHTML=l.length?l.map(p=>this.html(p)).join(''):'<div class="empty">لا توجد نتائج</div>';
+  },
+  feat(){
+    $('feat').innerHTML=DB.products.slice(0,8).map(p=>this.html(p)).join('');
+  },
+  html(p){
+    const s=DB.sellers.find(x=>x.id===p.s);
+    const d=p.o?Math.round((1-p.p/p.o)*100):0;
+    return `<div class="card pr" onclick="prod.show(${p.id})">
+      <div class="icon">${p.i}</div>
+      ${d?`<span class="badge bd2">-${d}%</span>`:''}
+      <h3>${p.n}</h3>
+      <div class="muted">🏪 ${s.n} • 📍 ${p.ct}</div>
+      <div class="fb mt">
+        <div>
+          <div class="price">${f(p.p)} ر.ي</div>
+          ${p.o?`<div class="old-price">${f(p.o)}</div>`:''}
+        </div>
+        <button class="btn bp bs" onclick="event.stopPropagation();cart.add(${p.id})">+ سلة</button>
+      </div>
+    </div>`;
+  },
+  show(id){
+    const p=DB.products.find(x=>x.id===id);
+    const s=DB.sellers.find(x=>x.id===p.s);
+    $('mdc').innerHTML=`
+      <div class="fb mb">
+        <h3>${p.n}</h3>
+        <button class="btn bo bs" onclick="md.close()">✕</button>
+      </div>
+      <div class="icon" style="height:140px;font-size:70px">${p.i}</div>
+      <h3 class="mt">${f(p.p)} ر.ي ${p.o?`<span class="old-price">${f(p.o)}</span>`:''}</h3>
+      <p class="muted mt">${p.c} • 📍 ${p.ct} • المخزون: ${p.st}</p>
+      <p class="mt">🏪 <strong>${s.n}</strong> ⭐ ${s.r} ${s.v?'✅ موثق':'⏳ قيد التوثيق'}</p>
+      <button class="btn bp mt" style="width:100%" onclick="cart.add(${p.id});md.close()">🛍️ أضف للسلة</button>`;
+    md.open();
+  }
+};
+
+const cart={
+  toggle(){
+    $('dr').classList.toggle('on');
+    $('ov').classList.toggle('on');
+    this.render();
+  },
+  add(id){
+    const it=DB.cart.find(x=>x.id===id);
+    if(it)it.q++;
+    else DB.cart.push({...DB.products.find(p=>p.id===id),q:1});
+    $('cc').textContent=DB.cart.reduce((a,b)=>a+b.q,0);
+    toast('✅ أضيف للسلة');
+  },
+  setQ(id,q){
+    const it=DB.cart.find(x=>x.id===id);
+    if(it){it.q=Math.max(1,q);this.render();}
+  },
+  del(id){
+    DB.cart=DB.cart.filter(x=>x.id!==id);
+    $('cc').textContent=DB.cart.reduce((a,b)=>a+b.q,0);
+    this.render();
+  },
+  tot(){return DB.cart.reduce((a,b)=>a+b.p*b.q,0);},
+  render(){
+    if(!DB.cart.length){
+      $('ci').innerHTML='<div class="empty">🛒 السلة فارغة</div>';
+      $('cs').innerHTML='';
+      return;
+    }
+    $('ci').innerHTML=DB.cart.map(i=>`
+      <div class="card mb">
+        <div class="fb">
+          <div style="flex:1">
+            <strong style="font-size:12px">${i.i} ${i.n}</strong>
+            <div class="price">${f(i.p)} ر.ي</div>
+          </div>
+          <div class="flex">
+            <button class="btn bo bs" onclick="cart.setQ(${i.id},${i.q-1})">−</button>
+            <span style="min-width:22px;text-align:center;font-weight:bold">${i.q}</span>
+            <button class="btn bo bs" onclick="cart.setQ(${i.id},${i.q+1})">+</button>
+            <button class="btn bd bs" onclick="cart.del(${i.id})">🗑️</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    const sub=this.tot();
+    const sh=DB.cities.find(c=>c.on)?.sh||0;
+    $('cs').innerHTML=`
+      <div class="card">
+        <div class="fb"><span>المجموع الفرعي:</span><strong>${f(sub)} ر.ي</strong></div>
+        <div class="fb mt"><span>الشحن:</span><strong>${f(sh)} ر.ي</strong></div>
+        <hr style="margin:10px 0;border:none;border-top:1px solid var(--b)">
+        <div class="fb"><strong>الإجمالي:</strong><strong class="price">${f(sub+sh)} ر.ي</strong></div>
+        <button class="btn ba" style="width:100%;margin-top:12px;padding:12px" onclick="order.checkout()">✅ إتمام الشراء</button>
+      </div>`;
+  }
+};
+
+const order={
+  checkout(){
+    if(!DB.cart.length)return toast('السلة فارغة','err');
+    const sh=DB.cities.find(c=>c.on)?.sh||0;
+    const t=cart.tot()+sh;
+    if(t>DB.user.wallet)return toast('❌ رصيد غير كافٍ','err');
+    DB.user.wallet-=t;
+    const o={
+      id:1000+DB.orders.length+1,
+      items:[...DB.cart],
+      tot:t,
+      st:'pending',
+      d:new Date().toLocaleDateString('ar-YE'),
+      ct:DB.cities.find(c=>c.on)?.n
+    };
+    DB.orders.push(o);
+    DB.cart=[];
+    $('cc').textContent=0;
+    cart.toggle();
+    toast('🎉 تم إنشاء الطلب #'+o.id);
+    setTimeout(()=>{o.st='confirmed';toast('✅ الطلب #'+o.id+' مؤكد');},2500);
+    setTimeout(()=>{o.st='shipped';toast('🚚 الطلب #'+o.id+' في الطريق');},5000);
+  },
+  render(){
+    if(!DB.orders.length){
+      $('ordList').innerHTML='<div class="card empty">لا توجد طلبات بعد</div>';
+      return;
+    }
+    const st={
+      pending:['⏳','bw','قيد المعالجة'],
+      confirmed:['✅','bg','مؤكد'],
+      shipped:['🚚','bi','في الطريق']
+    };
+    $('ordList').innerHTML=DB.orders.slice().reverse().map(o=>`
+      <div class="card mb">
+        <div class="fb">
+          <div>
+            <strong>طلب #${o.id}</strong>
+            <div class="muted">${o.d} • ${o.ct}</div>
+          </div>
+          <span class="badge ${st[o.st][1]}">${st[o.st][0]} ${st[o.st][2]}</span>
+        </div>
+        <div class="mt">
+          ${o.items.map(i=>`<span class="badge bi">${i.i} ${i.n} ×${i.q}</span> `).join('')}
+        </div>
+        <div class="mt"><strong class="price">${f(o.tot)} ر.ي</strong></div>
+      </div>
+    `).join('');
+  }
+};
+
+const seller={
+  render(){
+    const s=DB.sellers[0];
+    const mp=DB.products.filter(p=>p.s===s.id);
+    $('sr').textContent=f(s.s);
+    $('so').textContent=DB.orders.length+12;
+    $('sp').textContent=mp.length;
+    $('spt').innerHTML=mp.map(p=>`
+      <tr>
+        <td>${p.i} ${p.n}</td>
+        <td>${f(p.p)}</td>
+        <td>${p.st}</td>
+        <td><button class="btn bd bs" onclick="seller.del(${p.id})">🗑️</button></td>
+      </tr>
+    `).join('');
+    const ords=DB.orders.length?DB.orders:[
+      {id:1001,ct:'صنعاء',tot:185000,st:'pending'},
+      {id:1002,ct:'عدن',tot:12000,st:'confirmed'},
+      {id:1003,ct:'تعز',tot:65000,st:'shipped'}
+    ];
+    $('sot').innerHTML=ords.map(o=>`
+      <tr>
+        <td>#${o.id}</td>
+        <td>أحمد اليماني</td>
+        <td>${f(o.tot)}</td>
+        <td><span class="badge bw">${o.st}</span></td>
+      </tr>
+    `).join('');
+    const d=['سبت','أحد','اثن','ثلا','أرب','خمي','جمع'];
+    const v=[40,65,30,80,95,55,70];
+    $('sc').innerHTML=v.map((x,i)=>
+      `<div class="bar" style="height:${x}%"><span>${x}k</span><i>${d[i]}</i></div>`
+    ).join('');
+  },
+  del(id){
+    if(confirm('حذف المنتج؟')){
+      DB.products=DB.products.filter(p=>p.id!==id);
+      this.render();
+      prod.render();
+      toast('🗑️ تم الحذف','err');
+    }
+  },
+  addForm(){
+    $('mdc').innerHTML=`
+      <h3>➕ إضافة منتج جديد</h3>
+      <input id="an" placeholder="اسم المنتج">
+      <input id="ap" type="number" placeholder="السعر (ر.ي)">
+      <input id="as" type="number" placeholder="المخزون">
+      <select id="ac">
+        <option>إلكترونيات</option>
+        <option>ملابس</option>
+        <option>أغذية</option>
+        <option>منزل</option>
+        <option>تجميل</option>
+      </select>
+      <button class="btn bp mt" style="width:100%;padding:12px" onclick="seller.add()">✅ إضافة المنتج</button>`;
+    md.open();
+  },
+  add(){
+    const n=$('an').value.trim();
+    const p=+$('ap').value;
+    const st=+$('as').value;
+    const c=$('ac').value;
+    if(!n||!p||!st)return toast('اكمل جميع البيانات','err');
+    const ic={'إلكترونيات':'📦','ملابس':'👕','أغذية':'🍯','منزل':'🏠','تجميل':'🧴'};
+    const newId=Math.max(...DB.products.map(x=>x.id))+1;
+    DB.products.push({
+      id:newId,n,p,o:0,c,s:1,st,x:0,i:ic[c]||'📦',ct:'صنعاء'
+    });
+    md.close();
+    this.render();
+    prod.render();
+    prod.feat();
+    toast('✅ تمت الإضافة');
+  }
+};
+
+const admin={
+  render(){
+    const tot=DB.sellers.reduce((a,b)=>a+b.s,0);
+    $('gmv').textContent=f(tot);
+    $('com').textContent=f(Math.round(tot*.05));
+    $('as').textContent=DB.sellers.filter(s=>s.st==='active').length;
+    $('ast').innerHTML=DB.sellers.map(s=>`
+      <tr>
+        <td>${s.v?'✅':'⏳'} ${s.n}</td>
+        <td>${s.c}</td>
+        <td>${f(s.s)}</td>
+        <td><span class="badge ${s.st==='active'?'bg':'bw'}">${s.st==='active'?'نشط':'معلق'}</span></td>
+        <td><button class="btn bo bs" onclick="admin.tog(${s.id})">${s.st==='active'?'تعليق':'تنشيط'}</button></td>
+      </tr>
+    `).join('');
+    $('kycList').innerHTML=DB.kyc.length?DB.kyc.map(k=>`
+      <div class="card mb fb">
+        <div>
+          <strong>${k.s}</strong>
+          <div class="muted">${k.d}</div>
+        </div>
+        <div class="flex">
+          <button class="btn bp bs" onclick="admin.app(${k.id})">✅</button>
+          <button class="btn bd bs" onclick="admin.rej(${k.id})">❌</button>
+        </div>
+      </div>
+    `).join(''):'<div class="card empty">لا توجد طلبات معلقة</div>';
+    const d=['سبت','أحد','اثن','ثلا','أرب','خمي','جمع'];
+    const v=[120,180,150,220,260,190,240];
+    $('ac').innerHTML=v.map((x,i)=>
+      `<div class="bar" style="height:${x/300*100}%"><span>${x}k</span><i>${d[i]}</i></div>`
+    ).join('');
+  },
+  tog(id){
+    const s=DB.sellers.find(x=>x.id===id);
+    s.st=s.st==='active'?'suspended':'active';
+    this.render();
+    toast('تم التحديث');
+  },
+  app(id){
+    DB.kyc=DB.kyc.filter(k=>k.id!==id);
+    this.render();
+    toast('✅ تم القبول');
+  },
+  rej(id){
+    DB.kyc=DB.kyc.filter(k=>k.id!==id);
+    this.render();
+    toast('❌ تم الرفض','err');
+  }
+};
+
+const md={
+  open(){$('md').classList.add('on');},
+  close(){$('md').classList.remove('on');}
+};
+
+cities.render();
+prod.render();
+prod.feat();
+</script>
+</body>
+</html>
